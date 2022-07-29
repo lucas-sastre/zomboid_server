@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  zomboid-server:
+    image: zomboid-dedicated-server_zomboid-server:latest
+    #build:
+    #  context: .
+    #  dockerfile: docker/zomboid-dedicated-server.Dockerfile
+    #  args:
+    #    USER_ID: 0
+    #    GROUP_ID: 0
+    restart: unless-stopped
+    container_name: zomboid-dedicated-server
+    user: "0:0"
+    environment:
+      ADMIN_PASSWORD: $ADMIN_PASSWORD
+      ADMIN_USERNAME: "superuser"
+      AUTOSAVE_INTERVAL: "15"
+      BIND_IP: "0.0.0.0"
+      GAME_PORT: "8766"
+      GAME_VERSION: "public"
+      MAX_PLAYERS: "16"
+      MAX_RAM: "4096m"
+      MOD_NAMES: "Authentic Z;Brita's Armor Pack;92amgeneralM998;AlicebackpackS;CustomMapBridge;Loot Zeta Enhanced Edition; SkillsMag;TableSaw;AmmoMakerReloaded;Factory;MilitaryComplex;SnakeClothingMod;TallerMecanico;BarcoAbandonado;FuelTanksMod;RefillPropaneTanks;SnakeMansion;WPA;BatesMetalicosRevived;LeGourmetRevolution;Riverside Gunstore;Snake Utils Pack;Silencer;Eliaz Better Bags & Backpacks B41;Eggon's Fanny Pack Balancing;Immersive Overlays;Immersive Solar Arrays;Zombie Virus Vaccine;Rosewood Expansion;Autotsar Tuning Atelier - Bus;Dynamic Traits"
+      MOD_WORKSHOP_IDS: "2335368829;2642541073;2460154811;2719327441;639909479;2276669022;2593268632;533622988;2623458493;2512119000;2718350686;2592358528;2459400130"
+      NO_CHOWN_CONFIG_DIR: "false"
+      NO_CHOWN_GAME_DIR: "false"
+      PAUSE_ON_EMPTY: "true"
+      PUBLIC_SERVER: "true"
+      QUERY_PORT: "16261"
+      RCON_PASSWORD: "changeme_rcon"
+      RCON_PORT: "27015"
+      SERVER_NAME: "ZomboidServerDeLesPibes"
+      SERVER_PASSWORD: ""
+      STEAM_VAC: "true"
+      USE_STEAM: "true"
+    ports:
+      - target: 8766
+        published: 8766
+        protocol: udp
+      - target: 16261
+        published: 16261
+        protocol: udp
+      - target: 27015
+        published: 27015
+        protocol: tcp
+    volumes:
+      - zomboid_ZomboidDedicatedServer:/home/steam/ZomboidDedicatedServer
+      - zomboid_ZomboidConfig:/home/steam/Zomboid/
+    cap_drop:
+      - ALL
+volumes:
+   zomboid_ZomboidDedicatedServer:
+        external: true
+   zomboid_ZomboidConfig:
+    external: true
